@@ -138,9 +138,3 @@ Chirag Sharma
 DevOps Engineer
 
 ```
-
----
-
-If you want to stand out (especially for interviews or internal docs), next step would be:
-👉 add **CSV export + Jenkins integration** — that turns this from a script into a real DevOps tool.
-```
