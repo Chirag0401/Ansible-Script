@@ -31,7 +31,7 @@ The playbook then executes `systemctl is-active` for each service and displays t
 ├── check_service_status.yml
 └── README.md
 
-````
+```
 
 ---
 
