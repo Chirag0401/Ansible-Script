@@ -1,0 +1,38 @@
+---
+- name: Check detailed status of selected services on target servers
+  hosts: all
+  gather_facts: no
+  become: yes
+
+  vars_prompt:
+    - name: adm_user
+      prompt: "Enter adm user"
+      private: no
+
+    - name: adm_password
+      prompt: "Enter adm user password"
+      private: yes
+
+  vars:
+    ansible_user: "{{ adm_user }}"
+    ansible_password: "{{ adm_password }}"
+    ansible_become_password: "{{ adm_password }}"
+    ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+
+    services_to_check:
+      - besclient.service
+      - falcon-sensor.service
+      - ir_agent.service
+
+  tasks:
+    - name: Get detailed service status
+      ansible.builtin.command: "systemctl status {{ item }} --no-pager"
+      register: service_status_details
+      ignore_errors: yes
+      changed_when: false
+      loop: "{{ services_to_check }}"
+
+    - name: Show detailed service status
+      ansible.builtin.debug:
+        msg: "{{ item.stdout_lines | default(['Service not found or failed']) }}"
+      loop: "{{ service_status_details.results }}"
